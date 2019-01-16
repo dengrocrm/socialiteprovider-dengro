@@ -16,7 +16,7 @@ class Provider extends AbstractProvider implements ProviderInterface
     /**
      * {@inheritdoc}
      */
-    protected $scopes = ['basic'];
+    protected $scopes = ['user-read'];
 
     /**
      * {@inheritdoc}
@@ -39,7 +39,7 @@ class Provider extends AbstractProvider implements ProviderInterface
      */
     protected function getUserByToken($token)
     {
-        $response = $this->getHttpClient()->get('https://id.dengro.com/api/details', [
+        $response = $this->getHttpClient()->post('https://id.dengro.com/api/details', [
             'headers' => [
                 'Authorization' => 'Bearer '.$token,
             ],
@@ -55,10 +55,8 @@ class Provider extends AbstractProvider implements ProviderInterface
     {
         return (new User())->setRaw($user)->map([
             'id'       => $user['id'],
-            'nickname' => $user['username'],
             'name'     => $user['name'],
             'email'    => $user['email'],
-            'avatar'   => $user['avatar'],
         ]);
     }
 
