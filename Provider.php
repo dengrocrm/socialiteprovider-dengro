@@ -21,9 +21,19 @@ class Provider extends AbstractProvider implements ProviderInterface
     /**
      * {@inheritdoc}
      */
+    protected function getBaseUri()
+    {
+        return $this->getConfig('base_uri', 'https://id.dengro.com');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function getAuthUrl($state)
     {
-        return $this->buildAuthUrlFromBase('https://id.dengro.com/oauth/authorize', $state);
+        return $this->buildAuthUrlFromBase(
+            $this->getInstanceUri().'/oauth/authorize', $state
+        );
     }
 
     /**
@@ -31,7 +41,7 @@ class Provider extends AbstractProvider implements ProviderInterface
      */
     protected function getTokenUrl()
     {
-        return 'https://id.dengro.com/oauth/token';
+        return $this->getInstanceUri().'/oauth/token';
     }
 
     /**
@@ -39,7 +49,7 @@ class Provider extends AbstractProvider implements ProviderInterface
      */
     protected function getUserByToken($token)
     {
-        $response = $this->getHttpClient()->post('https://id.dengro.com/api/details', [
+        $response = $this->getHttpClient()->post($this->getInstanceUri().'/api/details', [
             'headers' => [
                 'Authorization' => 'Bearer '.$token,
             ],
