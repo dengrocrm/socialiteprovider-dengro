@@ -2,8 +2,8 @@
 
 namespace SocialiteProviders\DenGro;
 
-use Laravel\Socialite\Two\ProviderInterface;
 use SocialiteProviders\Manager\OAuth2\AbstractProvider;
+use Laravel\Socialite\Two\ProviderInterface;
 use SocialiteProviders\Manager\OAuth2\User;
 
 class Provider extends AbstractProvider implements ProviderInterface
@@ -21,9 +21,23 @@ class Provider extends AbstractProvider implements ProviderInterface
     /**
      * {@inheritdoc}
      */
-    protected function getBaseUri()
+    protected $fields = ['id', 'email', 'first_name', 'last_name', 'name', 'base_url'];
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function additionalConfigKeys()
     {
-        return $this->getConfig('base_uri', 'https://id.dengro.com');
+        return ['base_url'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getBaseUrl()
+    {
+        // $this->getConfig('base_url') is not working, using Laravel config instead
+        return app('config')->get('services.dengro.base_url') ?? 'https://id.dengro.com';
     }
 
     /**
@@ -32,7 +46,7 @@ class Provider extends AbstractProvider implements ProviderInterface
     protected function getAuthUrl($state)
     {
         return $this->buildAuthUrlFromBase(
-            $this->getInstanceUri().'/oauth/authorize', $state
+            $this->getBaseUrl().'/oauth/authorize', $state
         );
     }
 
@@ -41,7 +55,7 @@ class Provider extends AbstractProvider implements ProviderInterface
      */
     protected function getTokenUrl()
     {
-        return $this->getInstanceUri().'/oauth/token';
+        return $this->getBaseUrl().'/oauth/token';
     }
 
     /**
@@ -49,7 +63,7 @@ class Provider extends AbstractProvider implements ProviderInterface
      */
     protected function getUserByToken($token)
     {
-        $response = $this->getHttpClient()->post($this->getInstanceUri().'/api/details', [
+        $response = $this->getHttpClient()->post($this->getBaseUrl().'/api/details', [
             'headers' => [
                 'Authorization' => 'Bearer '.$token,
             ],
