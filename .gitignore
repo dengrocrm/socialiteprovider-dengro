@@ -3,3 +3,4 @@ composer.phar
 composer.lock
 *.log
 *.DS_Store
+.idea/
