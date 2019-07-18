@@ -37,7 +37,7 @@ class Provider extends AbstractProvider implements ProviderInterface
     protected function getBaseUrl()
     {
         // $this->getConfig('base_url') is not working, using Laravel config instead
-        return app('config')->get('services.dengro.base_url') ?? 'https://id.dengro.com';
+        return app('config')->get('services.dengro.base_url') ?? 'https://sso.dengro.com';
     }
 
     /**
