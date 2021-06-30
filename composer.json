@@ -9,7 +9,7 @@
         "homepage": "https://github.com/dengrocrm"
     }],
     "require": {
-        "php": "^5.6 || ^7.0",
+        "php": "^5.6|^7.0|^8.0",
         "socialiteproviders/manager": "^3.0"
     },
     "autoload": {
