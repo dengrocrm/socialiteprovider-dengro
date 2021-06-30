@@ -1,7 +1,6 @@
 {
     "name": "dengrocrm/socialiteprovider-dengro",
     "description": "DenGro OAuth2 Provider for Laravel Socialite",
-    "version": "1.0.6",
     "license": "MIT",
     "authors": [{
         "name": "Dan Davidson",
